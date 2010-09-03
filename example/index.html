@@ -1,0 +1,156 @@
+<html>
+<head>
+	<script src="prototype.js"></script>
+	<script src="effects.js"></script>
+	<script src="../SegmentedSlider.js"></script>
+	<link rel="stylesheet" type="text/css" href="../SegmentedSlider.css" />
+	<style>
+body {
+	font-family: lucida grande;
+	background-color: rgb(237, 237, 237);
+}
+
+table {
+	font-size: 0.8em;
+	border-spacing: 0px;
+}
+
+tr td {
+	padding: 0.3em;
+}
+
+tr.all td {
+	background-color: rgb(255, 0, 0);
+}
+
+tr.trace td {
+	background-color: rgb(255, 36, 36);
+}
+
+tr.debug td {
+	background-color: rgb(255, 72, 72);
+}
+
+tr.info td {
+	background-color: rgb(255, 108, 108);
+}
+
+tr.warn td {
+	background-color: rgb(255, 144, 144);
+}
+
+tr.error td {
+	background-color: rgb(255, 180, 180);
+}
+
+tr.fatal td {
+	background-color: rgb(255, 216, 216);
+}
+
+tr.off td {
+	background-color: none;
+}
+
+tr.unset td {
+	background-color: rgb(230, 230, 230);
+}
+
+tr.translucent td {
+	background-color: rgb(200, 200, 255);
+}
+
+div.slider#example_slider2 ol li {
+	width: 7em;
+}
+
+div.slider#example_slider3 {
+	background-color: rgba(200, 200, 200, 0.50);
+}
+
+div.slider#example_slider4 ol li {
+	width: auto;
+	padding-right: 2em;
+	padding-left: 2em;
+}
+
+div.slider#example_slider7 {
+	border-radius: 1em;
+	-moz-border-radius: 1em;
+}
+
+div.slider#example_slider7 div.selector {
+	border-radius: 1em;
+	-moz-border-radius: 1em;	
+}
+
+div.slider#example_slider7 ol.separators {
+	display: none;
+}
+
+div.slider#example_slider8 {
+	font-size: 0.5em;
+}
+
+div.slider#example_slider8 ol li {
+	font-size: 0.5em;
+	width: 2em;
+}
+
+div.slider#example_slider9 {
+	font-size: 2em;
+}
+	</style>
+</head>
+<body>
+
+<script>
+function createSlider(sliderElement, items, options) {
+	var slider = new SegmentedSlider($(sliderElement), $(sliderElement).id, options);
+	items.each(function(item) {
+		slider.addItem(item);
+	});
+	return slider;
+}
+
+Event.observe(window, 'load', function() {
+	new SegmentedSlider($('example_slider0'), 'example_slider0');
+	
+	createSlider('example_slider1', [ 'red', 'white', 'blue']);
+	createSlider('example_slider2', [ 'here', 'there' ]);
+	createSlider('example_slider3', [ '1', '2', '3', '4', '5' ]);
+	createSlider('example_slider4', [ 'in', 'out', 'beneath' ]);
+	
+	var slider5 = createSlider('example_slider5', [ 'trace', 'debug', 'info', 'warn', 'error', 'off' ]);
+	slider5.select('warn');
+	slider5.sliderElement().observe('slider:itemDeselected', function(event) {
+		event.memo.sliderElement.up('tr').removeClassName(event.memo.name);
+	});
+	slider5.sliderElement().observe('slider:itemSelected', function(event) {
+		event.memo.sliderElement.up('tr').addClassName(event.memo.name);
+	});
+	slider5.fireItemSelected(); // refire events since we didn't have observes earlier
+	
+	createSlider('example_slider6', [ 'home', 'work', 'cell' ], { initialSelection: false, toggleSelection: true });
+	createSlider('example_slider7', [ 'who', 'what', 'when' ]);
+	createSlider('example_slider8', [ 'a', 'b', 'c' ]);
+	createSlider('example_slider9', [ 'dog', 'cat', 'bird' ]);
+});
+</script>
+
+<h1>SegmentedSlider</h1>
+
+<table width="100%">
+	<tr><td>fixed width, li generated</td><td><div id="example_slider0"><ol><li>tom</li><li>dick</li><li>harry</li></ol></div></td></tr>
+	<tr><td>fixed width, javascript generated</td><td><div id="example_slider1"></div></td></tr>
+	<tr><td>fixed width, li / javascript generated</td><td><div id="example_slider2"><ol><li id='extra'>extra</li></ol></div></td></tr>
+	<tr class="translucent"><td>fixed width, translucent track</td><td><div id="example_slider3"></div></td></tr>
+	<tr><td>variable width</td><td><div id="example_slider4"></div></td></tr>
+	<tr><td>fixed width, events</td><td><div id="example_slider5"></div></td></tr>
+	<tr><td>no selection, toggle selection</td><td><div id="example_slider6"></div></td></tr>
+	<tr><td>rounded</td><td><div id="example_slider7"></div></td></tr>
+	<tr><td>itty-bitty</td><td><div id="example_slider8"></div></td></tr>
+	<tr><td>big boy</td><td><div id="example_slider9"></div></td></tr>
+</table>
+
+</body>
+</html>
