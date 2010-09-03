@@ -1,0 +1,5 @@
+SegmentedSlider provides a Prototyped-based control for an enumerated type picker.
+
+Just look at the example -- it will make more sense: http://mschrag.github.com/segmented_slider/example
+
+There's no way in hell IE works. That is all.
