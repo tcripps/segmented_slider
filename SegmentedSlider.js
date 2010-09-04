@@ -40,6 +40,10 @@ var SegmentedSlider = Class.create({
 	 * @param animate whether or not to animate the selection
 	 */
 	select: function(item, animate) {
+		return this._select(item, animate, false);
+	},
+		
+	_select: function(item, animate, initialSelection) {
 		var itemElement = item;
 		
 		if (typeof item == 'string') {
@@ -59,7 +63,7 @@ var SegmentedSlider = Class.create({
 			radioButton.checked = false;
 		});
 		
-		if (previousSelectedItemElement == itemElement && this._toggleSelection) {
+		if (!initialSelection && previousSelectedItemElement == itemElement && this._toggleSelection) {
 			itemElement = null;
 		}
 
@@ -221,7 +225,7 @@ var SegmentedSlider = Class.create({
 	},
 	
 	_resetSlider: function() {
-		this.select(this.selectedItemElement(), false);
+		this._select(this.selectedItemElement(), false, true);
 	},
 
 	_selectorElement: function() {
