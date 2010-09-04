@@ -27,7 +27,7 @@ var SegmentedSlider = Class.create({
 	addItem: function(value, displayName, selected) {
 		var sliderListElement = this._sliderElement.down('ol.items');
 		var sliderItemElement = document.createElement('li');
-		sliderItemElement.update('<input type="radio" name="' + this._name + '" value="' + value + '"/>' + (displayName || value));
+		sliderItemElement.update('<input type="radio" name="' + this._name + '" value="' + value + '" ' + (selected ? 'checked' : '') + '/>' + (displayName || value));
 		sliderListElement.insert(sliderItemElement);
 		this._addItem(sliderItemElement, selected);
 		return sliderItemElement;
@@ -211,7 +211,7 @@ var SegmentedSlider = Class.create({
 				radioButton.value = sliderItemElement.getAttribute('name') || sliderItemElement.id || sliderItemElement.innerHTML.trim();
 				sliderItemElement.insertBefore(radioButton, sliderItemElement.firstChild);
 			}
-			thisSegmentedSlider._addItem(sliderItemElement, sliderItemElement.hasClassName('selected'));
+			thisSegmentedSlider._addItem(sliderItemElement, sliderItemElement.hasClassName('selected') || radioButton.checked);
 		});
 	},
 	
