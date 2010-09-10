@@ -311,7 +311,6 @@ var SegmentedSlider = Class.create({
 				var offset = selectedItemElement.positionedOffset();
 				selectorDragElement.style.left = offset.left + 'px';
 				selectorDragElement.style.width = selectedItemElement.getWidth();
-				this._currentDropTargetEl = selectedItemElement;
 			}
 			
 			new Draggable(selectorDragElement, { 
@@ -335,6 +334,13 @@ var SegmentedSlider = Class.create({
 		
 			selectorDragElement.observe('mouseup', function() {
 				this._selectorElement().removeClassName("selector_active");
+				
+				// Toggle selection support.
+				var currentTarget = this._currentDropTargetEl;
+				var selectedItemElement = this.selectedItemElement();
+				if (selectedItemElement === undefined || (currentTarget !== undefined && currentTarget == this.selectedItemElement())) {
+					this.select(currentTarget, false);
+				}
 			}.bind(this));
 		
 			this._isDragSupportEnabled = true;
@@ -342,7 +348,7 @@ var SegmentedSlider = Class.create({
 	},
 	
 	/**
-	 * Removes drag support from the slider.
+	 * Removes drag support for the slider.
 	 */
 	removeDragSupport: function() {
 		if (this.isDragSupportEnabled()) {
@@ -372,7 +378,9 @@ var SegmentedSlider = Class.create({
 	},
 	
 	_dragHover: function(draggable, droppable, percentOverlap) {
-		this._currentDropTargetEl = droppable;
+		if (droppable != this.selectedItemElement()) {
+			this._currentDropTargetEl = droppable;
+		}
 	},
 	
 	_drag: function(eventInfo) {
@@ -386,7 +394,7 @@ var SegmentedSlider = Class.create({
 		
 		// Adjust the width of the slider to match the width of the item over which the drag
 		// element is currently held.
-		var currentlyHoveredOverElement = this._currentDropTargetEl || this._findItemElementWithCoordinates(offset.left, 0);
+		var currentlyHoveredOverElement = this._findItemElementWithCoordinates(offset.left, 0);
 		if (currentlyHoveredOverElement !== undefined) {
 			var width = currentlyHoveredOverElement.getWidth();
 			draggedEl.style.width = width + 'px';
