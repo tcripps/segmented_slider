@@ -372,9 +372,7 @@ var SegmentedSlider = Class.create({
 	},
 	
 	_dragHover: function(draggable, droppable, percentOverlap) {
-		if (droppable != this.selectedItemElement()) {
-			this._currentDropTargetEl = droppable;
-		}
+		this._currentDropTargetEl = droppable;
 	},
 	
 	_drag: function(eventInfo) {
