@@ -340,7 +340,7 @@ var SegmentedSlider = Class.create({
 				var currentTarget = this._currentDropTargetEl;
 				var selectedItemElement = this.selectedItemElement();
 				if (selectedItemElement === undefined || (currentTarget !== undefined && currentTarget == this.selectedItemElement())) {
-					this.select(currentTarget, false);
+					this.select(currentTarget, true);
 				}
 			}.bind(this));
 		
