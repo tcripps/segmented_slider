@@ -158,7 +158,7 @@ var SegmentedSlider = Class.create({
 	_addItem: function(sliderItemElement, selected) {
 		this._attachListener(sliderItemElement);
 		this._addSeparator(sliderItemElement);
-		if ((this._initialSelection && !this.selectedItemElement()) || selected) {
+		if (selected) {
 			this.select(sliderItemElement);
 		}
 	},
@@ -234,6 +234,7 @@ var SegmentedSlider = Class.create({
 			this._sliderElement.appendChild(itemListElement);
 		}
 		
+		var hasCheckedRadioButtonInGroup = itemListElement.select('input[type=radio]:checked').length > 0;
 		var thisSegmentedSlider = this;
 		var sliderItemElements = this.sliderItemElements().each(function(sliderItemElement) {
 			var radioButton = sliderItemElement.down('input');
@@ -243,7 +244,9 @@ var SegmentedSlider = Class.create({
 				radioButton.value = sliderItemElement.getAttribute('name') || sliderItemElement.id || sliderItemElement.innerHTML.trim();
 				sliderItemElement.insertBefore(radioButton, sliderItemElement.firstChild);
 			}
-			thisSegmentedSlider._addItem(sliderItemElement, sliderItemElement.hasClassName('selected') || radioButton.checked);
+			
+			var shouldSelectItem = (thisSegmentedSlider._initialSelection && !hasCheckedRadioButtonInGroup && !thisSegmentedSlider.selectedItemElement()) || sliderItemElement.hasClassName('selected') || radioButton.checked;
+			thisSegmentedSlider._addItem(sliderItemElement, shouldSelectItem);
 		});
 	},
 	
